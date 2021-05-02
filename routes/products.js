@@ -1,18 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const { getProducts, postProduct, getProductById, updateProduct, deleteProduct } = require('../controller/products')
+const { getProducts, postProduct, getProductById, updateProduct, deleteProduct, getImageProduct } = require('../controller/products')
+const storage = require('../config/imageSchema')
+const multer = require('multer')
+const upload = multer({ storage })
 
 router
   .get('/products', getProducts)
   .get('/products/:id', getProductById)
-  .post('/products', postProduct)
+  .get('/products/image/:id', getImageProduct)
+  .post('/products', upload.single('upload'), postProduct)
   .patch('/products/:id', updateProduct)
   .delete('/products/:id', deleteProduct)
-
-router.use((req, res) => {
-  res.status(200).json({
-    status: true
-  })
-})
 
 module.exports = router

@@ -1,15 +1,15 @@
 const express = require('express')
 const app = express()
-const private = require('./middleware/private')
+const apikey = require('./middleware/apikey')
 const cors = require('cors')
 const PORT = 3000
 
 const products = require('./routes/products')
 
+app.use(apikey)
 app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(private)
 app.use('/', products)
 app.use('/products', products)
 

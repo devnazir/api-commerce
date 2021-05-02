@@ -1,5 +1,7 @@
-const QUERY = require('../config/database')
+const { QUERY } = require('../config/database')
 const randomNumber = require('../helpers/randomNumber')
+const { ObjectId } = require('mongodb');
+const axios = require('axios')
 
 function Products() {
   this.getProductsData = ({ res }) => {
@@ -10,10 +12,24 @@ function Products() {
     })
   }
 
-  this.postProductData = (req, res) => {
+  this.getThisImage = async (req, id) => {
+    try {
+      const url = `${req.protocol}://${req.headers.host}${req.route.path}/image/${id}?apikey=${req.query.apikey}`
+      const fetchImage = await axios(url)
+      return fetchImage.data
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  this.postProductData = async (req, res) => {
+    const fileID = req.file.id
+
     const document = {
       name: req.body.name,
-      product_id: randomNumber()
+      product_id: randomNumber(),
+      imageID: fileID,
+      src: await this.getThisImage(req, fileID)
     }
 
     QUERY(client => {
@@ -28,6 +44,17 @@ function Products() {
     QUERY(client => {
       client.db('commerce').collection('products').find({ product_id: id, }).toArray((err, result) => {
         res.json(result)
+      })
+    })
+  }
+
+  this.getImageProductData = (req, res) => {
+    const id = req.params.id
+    QUERY(client => {
+      client.db('commerce').collection('products.chunks').find({ files_id: ObjectId(id) }).toArray((err, result) => {
+        res.json({
+          img: `data:image/jpeg;base64, ${result[0].data.buffer.toString('base64')}`
+        })
       })
     })
   }

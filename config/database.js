@@ -11,4 +11,7 @@ const QUERY = (query) => {
   })
 }
 
-module.exports = QUERY
+module.exports = {
+  QUERY,
+  uri
+}
