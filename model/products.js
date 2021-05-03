@@ -27,6 +27,8 @@ function Products() {
 
     const document = {
       name: req.body.name,
+      price: req.body.price,
+      category: req.body.category,
       product_id: randomNumber(),
       imageID: fileID,
       src: await this.getThisImage(req, fileID)
@@ -60,6 +62,7 @@ function Products() {
   }
 
   this.updateProductData = (req, res) => {
+    console.log(req.body)
     const id = req.params.id
     const newValue = {
       $set: req.body

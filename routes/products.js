@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { getProducts, postProduct, getProductById, updateProduct, deleteProduct, getImageProduct } = require('../controller/products')
-const storage = require('../config/imageSchema')
+const storage = require('../config/storageImage')
 const multer = require('multer')
 const upload = multer({ storage })
 

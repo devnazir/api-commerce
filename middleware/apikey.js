@@ -6,7 +6,7 @@ module.exports = function (req, res, next) {
     res.status(200)
   } else {
     res.status(403).json({
-      error: `Access Forbidden`
+      status: "Acces Forbiden"
     })
   }
   next()
