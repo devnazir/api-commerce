@@ -55,7 +55,7 @@ function Products() {
     QUERY(client => {
       client.db('commerce').collection('products.chunks').find({ files_id: ObjectId(id) }).toArray((err, result) => {
         res.json({
-          img: `data:image/jpeg;base64, ${result[0].data.buffer.toString('base64')}`
+          img: `data:image/png;base64, ${result[0].data.buffer.toString('base64')}`
         })
       })
     })
